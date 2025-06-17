@@ -1,7 +1,7 @@
 "use client";
 import { BlockName, Blockconfigs } from "./types";
 import Block from "./block";
-import Draggable from "./draggable";
+import Draggable from "../ui/draggable";
 import { useReducer } from "react";
 import { Input } from "../ui/input";
 function idNumReducer(state: number, action: { step: number; type: string }) {

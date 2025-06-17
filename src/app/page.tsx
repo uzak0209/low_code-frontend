@@ -1,6 +1,4 @@
 import Blocklist from "@/components/original/blocklist";
-import { BlockName} from "@/components/original/types";
-import { useReducer } from "react";
 export default function Home() {
 
 
