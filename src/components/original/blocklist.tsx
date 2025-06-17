@@ -1,10 +1,9 @@
 "use client";
-import { Blockprops, BlockListprops } from "./types";
+import { BlockName, Blockconfigs } from "./types";
 import Block from "./block";
 import Draggable from "./draggable";
 import { useReducer } from "react";
 import { Input } from "../ui/input";
-
 function idNumReducer(state: number, action: { step: number; type: string }) {
   switch (action.type) {
     case "increment":
@@ -16,17 +15,17 @@ function idNumReducer(state: number, action: { step: number; type: string }) {
   }
 }
 
-const Blocklist = (props: BlockListprops) => {
+const Blocklist = () => {
   const [id_num, dispatch] = useReducer(idNumReducer, 0);
   return (
     <div className="blocklist">
-      {props.blocklist.map((block) => (
+      {Object.keys(Blockconfigs).map((block) => (
         <Draggable
-          key={block.id}
-          initialPosition={{ x: 200, y: block.id * 100 }}
+          key={Blockconfigs[block as BlockName].id}
+          initialPosition={{ x: 200, y: Blockconfigs[block as BlockName].id * 100 }}
           ignoreTags={["input"]}
         >
-          <Block {...block} />
+          <Block {...Blockconfigs[block as BlockName]} />
         </Draggable>
       ))}
     </div>

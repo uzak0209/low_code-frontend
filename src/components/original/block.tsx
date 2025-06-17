@@ -1,33 +1,33 @@
 "use client";
 import { useState } from "react";
-import { Card } from "../ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
+import { Blockconfigs,BlockConfig} from "./types";
 
-type Blockprops = {
-  name: string;
-  id: number;
-  input?: boolean;
-};
-
-const Block = (props: Blockprops) => {
+const Block = (props: BlockConfig )=> {
   const [inputval, setInputval] = useState("");
-
   const changetxt = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputval(e.target.value);
   };
 
   return (
-    <div className={props.name} key={props.id}>
-      <Card className="p-4">
-        <p>{props.name}</p>
-        {props.input && (
-          <Input
-            value={inputval}
-            onChange={changetxt}
-            placeholder="Type something..."
-          />
-        )}
-        <p>ID: {props.id}</p>
+    <div key={props.id}>
+      <Card className={props.color}>
+        <CardHeader>
+          <CardTitle>
+            <p>{props.label}</p>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {props.hasInput && (
+            <Input
+              value={inputval}
+              onChange={changetxt}
+              placeholder=""
+            />
+          )}
+          <p>ID: {props.id}</p>
+        </CardContent>
       </Card>
     </div>
   );
