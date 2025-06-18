@@ -1,55 +1,47 @@
-"use client"
-import React, { useCallback, useEffect, useState } from 'react';
+import { useState,useCallback,useEffect } from "react";
 
+useState
 interface DraggableProps {
   children: React.ReactNode;
-  ignoreTags?: (keyof HTMLElementTagNameMap)[];
   initialPosition: { x: number; y: number };
+  onPositionChange?: (position: { x: number; y: number }) => void;
 }
 
-const Draggable = ({
-  children,
-  ignoreTags,
-  initialPosition,
-}: DraggableProps) => {
+const Draggable: React.FC<DraggableProps> = ({ children, initialPosition, onPositionChange }) => {
   const [position, setPosition] = useState(initialPosition);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [elementStart, setElementStart] = useState(initialPosition);
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (ignoreTags) {
-      const upperIgnoreTags = ignoreTags?.map((tag) => tag.toUpperCase());
-      const target = e.target as HTMLElement;
-      if (upperIgnoreTags.includes(target.tagName)) return;
-    }
+    const target = e.target as HTMLElement;
+    if (target.tagName === 'INPUT' || target.tagName === 'BUTTON') return;
     
     e.preventDefault();
     setIsDragging(true);
-    setDragStart({
-      x: e.clientX,
-      y: e.clientY,
-    });
+    setDragStart({ x: e.clientX, y: e.clientY });
     setElementStart({ ...position });
+    document.body.style.cursor = 'grabbing';
   };
 
-  const handleMouseMove = useCallback(
-    (e: MouseEvent) => {
-      if (!isDragging) return;
-      
-      const deltaX = e.clientX - dragStart.x;
-      const deltaY = e.clientY - dragStart.y;
-      
-      setPosition({
-        x: elementStart.x + deltaX,
-        y: elementStart.y + deltaY,
-      });
-    },
-    [isDragging, dragStart, elementStart],
-  );
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!isDragging) return;
+    
+    const deltaX = e.clientX - dragStart.x;
+    const deltaY = e.clientY - dragStart.y;
+    
+    const newPosition = {
+      x: Math.max(0, elementStart.x + deltaX),
+      y: Math.max(0, elementStart.y + deltaY),
+    };
+    
+    setPosition(newPosition);
+    onPositionChange?.(newPosition);
+  }, [isDragging, dragStart, elementStart, onPositionChange]);
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false);
+    document.body.style.cursor = 'default';
   }, []);
 
   useEffect(() => {
@@ -65,16 +57,15 @@ const Draggable = ({
   }, [isDragging, handleMouseMove, handleMouseUp]);
 
   return (
-    <div className="w-[100vw] h-[100vh]">
-      <div
-        onMouseDown={handleMouseDown}
-        style={{
-          transform: `translate(${position.x}px, ${position.y}px)`,
-        }}
-        className="absolute top-0 left-0 w-fit z-10 cursor-pointer origin-top-left select-none"
-      >
-        {children}
-      </div>
+    <div
+      onMouseDown={handleMouseDown}
+      style={{
+        transform: `translate(${position.x}px, ${position.y}px)`,
+        cursor: isDragging ? 'grabbing' : 'grab',
+      }}
+      className="absolute top-0 left-0 w-fit z-10 select-none transition-transform hover:scale-105"
+    >
+      {children}
     </div>
   );
 };
