@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 
 const Header = () => {
   return (
-    <div className="bg-white/80 backdrop-blur-sm border-b border-gray-200 p-4 flex items-center justify-between">
+    <div className="bg-white/80 backdrop-blur-sm border-b border-gray-200 p-4 flex items-center justify-between w-310">
       <div>
         <h1 className="text-xl font-semibold text-gray-800">
           ワークフロービルダー

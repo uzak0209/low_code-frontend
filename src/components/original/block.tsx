@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle} from "../ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
 import { BlockConfig } from "./types";
 import { Button } from "../ui/button";
@@ -12,18 +12,18 @@ interface BlockProps extends BlockConfig {
 }
 
 const Block: React.FC<BlockProps> = (props) => {
-  const [inputVal, setInputVal] = useState('');
-  const [selectorVal, setSelectorVal] = useState('');
+  const [inputVal, setInputVal] = useState("");
+  const [selectorVal, setSelectorVal] = useState("");
   const [isExpanded, setIsExpanded] = useState(true);
 
   return (
-    <Card className={`w-80 bg-gradient-to-br ${props.color} border-0 shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm`}>
+    <Card
+      className={`w-80 bg-gradient-to-br ${props.color} border-0 shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm`}
+    >
       <CardHeader className="p-3 pb-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="p-1.5 bg-white/20 rounded-md">
-              {props.icon}
-            </div>
+            <div className="p-1.5 bg-white/20 rounded-md">{props.icon}</div>
             <CardTitle className="text-white font-medium text-sm">
               {props.label}
             </CardTitle>
@@ -47,7 +47,7 @@ const Block: React.FC<BlockProps> = (props) => {
             </Button>
             <Button
               variant="ghost"
-              size="sm" 
+              size="sm"
               className="h-6 w-6 p-0 text-white/70 hover:text-white hover:bg-white/20"
               onClick={() => props.onDelete?.(props.id)}
             >
@@ -56,7 +56,7 @@ const Block: React.FC<BlockProps> = (props) => {
           </div>
         </div>
       </CardHeader>
-      
+
       {isExpanded && (
         <CardContent className="p-3 pt-1 space-y-3">
           {props.hasInput && (
@@ -72,7 +72,7 @@ const Block: React.FC<BlockProps> = (props) => {
               />
             </div>
           )}
-          
+
           {props.hasSelector && (
             <div className="space-y-1">
               <label className="text-white/90 text-xs font-medium block">
@@ -86,26 +86,12 @@ const Block: React.FC<BlockProps> = (props) => {
               />
             </div>
           )}
-          
+
           {!props.hasInput && !props.hasSelector && (
             <div className="bg-white/20 rounded-lg p-3 text-center">
-              <p className="text-white/80 text-xs">
-                設定項目がありません
-              </p>
+              <p className="text-white/80 text-xs">設定項目がありません</p>
             </div>
           )}
-          
-          <div className="flex gap-2 pt-2">
-            <Button
-              variant="glass"
-              size="sm"
-              className="flex-1 text-xs h-7"
-              onClick={() => props.onExecute?.(props.id)}
-            >
-              <Play className="w-3 h-3 mr-1" />
-              実行
-            </Button>
-          </div>
         </CardContent>
       )}
     </Card>
